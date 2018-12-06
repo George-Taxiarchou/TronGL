@@ -7,6 +7,7 @@ User Manual:
 
 To build go in the project Directory and use the following commands
 ~ make
+
 ~ ./tron
 
 1.Use the Right Mouse Button to open the Menu
