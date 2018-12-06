@@ -13,4 +13,4 @@ When all your points are placed press the Right Mouse Button and the Polygon wil
 
 3.Press the T to display the triangle lines
 
-4.Select the Extrude option and type your Z value to extrude the polygons in 3D and move the camera with the Arrows.
+4.Select the Extrude option and insert your Z value to the console to extrude the polygons in 3D and move the camera with the Arrows.
