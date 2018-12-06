@@ -5,6 +5,10 @@ This Program creates Polygons in 2D with a custom line and fill color , triangul
 
 User Manual:
 
+To build go in the project Directory and use the following commands
+~ make
+~ ./tron
+
 1.Use the Right Mouse Button to open the Menu
 
 2.Select the Polygon option and create the polygon points with the Left Mouse Button
