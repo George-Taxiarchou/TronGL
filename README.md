@@ -2,7 +2,9 @@
 OpenGL - GLUT project
 
 This Program creates Polygons in 2D with a custom line and fill color , triangulates them and extrudes them in 3D. 
-(Use the Arrows to move the Camera Angle)
+
+User Manual:
+
 1.Use the Right Mouse Button to open the Menu
 
 2.Select the Polygon option and create the polygon points with the Left Mouse Button
