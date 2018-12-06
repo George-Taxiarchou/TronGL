@@ -35,7 +35,7 @@ int wh=500;
 int polygonmode=0;
 int polygonsnum=0;
 int trianglesshown = 1;
-
+int extrudeentered=0;
 void project() 
 {
   glMatrixMode(GL_PROJECTION);
@@ -285,6 +285,48 @@ class Polygon{
      }
   }
 
+  void fillPolygon3dBackSide(float R,float G,float B,int num){
+     for(int i=0;i<tricount;i++){
+       const Vector2d &p1 = result[i*3+0];
+       const Vector2d &p2 = result[i*3+1];
+       const Vector2d &p3 = result[i*3+2];
+       setRGB(R,G,B);
+        glColor3f(R,G,B);
+        glEnable(GL_CULL_FACE);
+       glCullFace(GL_FRONT);
+       glBegin(GL_TRIANGLES);
+
+        glVertex3i(p1.GetX(),p1.GetY(),num);
+        glVertex3i(p2.GetX(),p2.GetY(),num);
+        glVertex3i(p3.GetX(),p3.GetY(),num);
+
+       glEnd();
+       
+       // glFlush();
+       glutSwapBuffers ();
+     }
+  } 
+
+  void fillPolygon3dFrontSide(float R,float G,float B,int num){
+     for(int i=0;i<tricount;i++){
+       const Vector2d &p1 = result[i*3+0];
+       const Vector2d &p2 = result[i*3+1];
+       const Vector2d &p3 = result[i*3+2];
+        glEnable(GL_CULL_FACE);
+       glCullFace(GL_BACK);
+       glBegin(GL_TRIANGLES);
+        setRGB(R,G,B);
+        glColor3f(R,G,B);
+        glVertex3i(p1.GetX(),p1.GetY(),num);
+        glVertex3i(p2.GetX(),p2.GetY(),num);
+        glVertex3i(p3.GetX(),p3.GetY(),num);
+
+       glEnd();
+       // glFlush();
+       glutSwapBuffers ();
+     }
+  }
+
   void drawPolygonLines(float LR,float LG,float LB){
     glBegin(GL_LINE_LOOP);
      for(int i=0;i<numberOfPoints;i++){
@@ -415,11 +457,13 @@ void mouse(int btn, int state,int x,int y)
   glPointSize(5.0f);
   if(polygonmode==1){
 
+    
     if(btn==GLUT_LEFT_BUTTON)
     {
 
         if(state==GLUT_DOWN)
         {
+          glutDetachMenu(GLUT_RIGHT_BUTTON);
           previouspoint = temppoint;
           std::cout << "Point Added" << std::endl;
           temppoint.x=x;
@@ -431,7 +475,7 @@ void mouse(int btn, int state,int x,int y)
 
         }
      }
-     else if(btn == GLUT_MIDDLE_BUTTON){
+     else if(btn == GLUT_RIGHT_BUTTON){
        if(state == GLUT_DOWN){
          if(temppolygon.doesIntersect()){
            for(int i=0;i<temppolygon.getNumberOfPoints();i++){
@@ -477,12 +521,12 @@ void ActionMenu(int value){
       polygonmode=1;
       glutMouseFunc(mouse);
 
-      // createMenu();
-      // glutDetachMenu(GLUT_RIGHT_BUTTON);
-      
+            
       break;
     case 2:
       // extrudeval=1;
+   //    float num;
+	  // cin >> num;
       toggleMode=1;
       project();
       glutReshapeFunc(reshape);
@@ -903,10 +947,22 @@ void draw3Dpolygon(Polygon poly, int z){
       // }
 }
 
+
+float num;
 void drawAll3Dpolygons(){
+	if(extrudeentered==0){
+		std::cout << "Enter Extrude Z: \n" << std::endl;
+		cin >> num;
+		extrudeentered=1;
+	}
+
   for(int i=0;i<polygonsnum;i++){
-    glColor3f(1.0,0.0,1.0);
-    draw3Dpolygon(polygonsarray[i],100);
+    glColor3f(polygonsarray[i].getLR(),polygonsarray[i].getLG(),polygonsarray[i].getLB());
+    
+    draw3Dpolygon(polygonsarray[i],num);
+    polygonsarray[i].fillPolygon3dFrontSide(polygonsarray[i].getR(),polygonsarray[i].getG(),polygonsarray[i].getB(),num);
+    polygonsarray[i].fillPolygon3dBackSide(polygonsarray[i].getR(),polygonsarray[i].getG(),polygonsarray[i].getB(),num);
+    
   }
 }
 
@@ -925,7 +981,9 @@ int main(int argc, char** argv) {
   
 
   glutMouseFunc(mouse);
+  
   glutSpecialFunc(windowSpecial);
+  
   glutKeyboardFunc(processNormalKeys);
   createMenu();
 
