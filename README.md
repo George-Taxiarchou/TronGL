@@ -1,7 +1,7 @@
 # TronGL
 OpenGL - GLUT project
 
-This Program creates Polygons in 2D with a custom line and fill color , triangulates them and extrudes them in 3D. 
+This Program creates non-self-intersecting Polygons in 2D with a custom line and fill color , triangulates them and extrudes them in 3D. 
 
 User Manual:
 
